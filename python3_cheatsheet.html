@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python 3 — Cheatsheet</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e12;
+    --surface: #16161d;
+    --card: #1c1c26;
+    --border: #2a2a3a;
+    --py: #3b82f6;
+    --py2: #6366f1;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f97316;
+    --yellow: #eab308;
+    --purple: #a855f7;
+    --cyan: #06b6d4;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --code-bg: #0a0a10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 32px 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  header {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 24px;
+  }
+  .logo {
+    font-size: 56px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--py), var(--py2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+  .logo span { font-size: 28px; opacity: .6; }
+  .tagline { color: var(--muted); font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+
+  /* TABS */
+  nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 28px; }
+  .tab {
+    padding: 6px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    transition: all .2s;
+  }
+  .tab:hover { border-color: var(--py); color: var(--text); }
+  .tab.active { background: var(--py); border-color: var(--py); color: #fff; }
+
+  /* GRID */
+  .section { display: none; }
+  .section.active { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); align-items: start; }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .card-body { padding: 14px 16px; }
+
+  /* BADGES */
+  .badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .badge {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    border: 1px solid;
+  }
+
+  /* PROS/CONS */
+  .pro-con { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pro-col h4 { color: var(--green); font-size: 11px; letter-spacing: 1px; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+  .con-col h4 { color: var(--red); font-size: 11px; letter-spacing: 1px; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+  .list-item { display: flex; gap: 8px; margin-bottom: 6px; font-size: 12.5px; color: var(--text); }
+  .list-item::before { content: '→'; color: var(--muted); flex-shrink: 0; }
+
+  /* CODE */
+  pre {
+    background: var(--code-bg);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    overflow-x: auto;
+    margin-top: 8px;
+    line-height: 1.7;
+    border: 1px solid #1e1e2e;
+  }
+  .kw { color: var(--py2); }
+  .fn { color: var(--cyan); }
+  .st { color: var(--green); }
+  .nu { color: var(--orange); }
+  .co { color: var(--muted); font-style: italic; }
+  .cl { color: var(--yellow); }
+  .op { color: var(--purple); }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  th { text-align: left; padding: 6px 10px; color: var(--muted); border-bottom: 1px solid var(--border); font-size: 11px; letter-spacing: 1px; }
+  td { padding: 5px 10px; border-bottom: 1px solid #1a1a24; }
+  td:first-child { color: var(--cyan); }
+  td:last-child { color: var(--muted); font-size: 11px; }
+  tr:last-child td { border-bottom: none; }
+
+  /* PILL TITLE colors */
+  .c-blue { background: #1e3a5f; color: var(--py); border-color: #1e3a5f; }
+  .c-purple { background: #2d1b4e; color: var(--purple); border-color: #2d1b4e; }
+  .c-green { background: #14291f; color: var(--green); border-color: #14291f; }
+  .c-orange { background: #2d1a0e; color: var(--orange); border-color: #2d1a0e; }
+  .c-red { background: #2d1414; color: var(--red); border-color: #2d1414; }
+  .c-cyan { background: #0a2230; color: var(--cyan); border-color: #0a2230; }
+  .c-yellow { background: #2a2000; color: var(--yellow); border-color: #2a2000; }
+
+  p.desc { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
+  h3.sub { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--muted); margin: 10px 0 4px; letter-spacing: 1px; text-transform: uppercase; }
+  .span2 { grid-column: span 2; }
+  @media(max-width:800px) { .span2 { grid-column: span 1; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">py<span>3</span></div>
+  <div>
+    <div style="font-size:22px;font-weight:700;margin-bottom:4px">Python 3 — Cheatsheet</div>
+    <div class="tagline"># wszystko co musisz wiedzieć · wersja PL</div>
+  </div>
+</header>
+
+<nav>
+  <div class="tab active" onclick="show('overview')">Założenia</div>
+  <div class="tab" onclick="show('types')">Typy danych</div>
+  <div class="tab" onclick="show('collections')">Kolekcje</div>
+  <div class="tab" onclick="show('functions')">Funkcje</div>
+  <div class="tab" onclick="show('oop')">OOP</div>
+  <div class="tab" onclick="show('control')">Flow / Wyjątki</div>
+  <div class="tab" onclick="show('builtins')">Wbudowane</div>
+  <div class="tab" onclick="show('advanced')">Zaawansowane</div>
+</nav>
+
+<!-- OVERVIEW -->
+<div class="section active" id="overview">
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--py)"></div>Co to jest Python?</div>
+    <div class="card-body">
+      <p class="desc">Interpretowany, wysokopoziomowy język ogólnego przeznaczenia. Dynamicznie typowany, garbage-collected.</p>
+      <div class="badge-row">
+        <span class="badge c-blue">interpretowany</span>
+        <span class="badge c-purple">dynamicznie typowany</span>
+        <span class="badge c-green">garbage collected</span>
+        <span class="badge c-orange">multi-paradigm</span>
+        <span class="badge c-cyan">cross-platform</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--purple)"></div>Paradygmaty</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Paradygmat</th><th>Opis</th></tr>
+        <tr><td>OOP</td><td>klasy, dziedziczenie, enkapsulacja, polimorfizm</td></tr>
+        <tr><td>Proceduralne</td><td>sekwencja instrukcji, funkcje</td></tr>
+        <tr><td>Funkcyjne</td><td>lambda, map/filter/reduce, closures</td></tr>
+        <tr><td>Aspektowe</td><td>dekoratory</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--green)"></div>Mocne strony ✓</div>
+    <div class="card-body">
+      <div class="list-item">Czytelna, zwięzła składnia — szybka nauka</div>
+      <div class="list-item">Ogromny ekosystem (PyPI: 500k+ paczek)</div>
+      <div class="list-item">Dominuje w AI/ML (TensorFlow, PyTorch, sklearn)</div>
+      <div class="list-item">Świetny do skryptowania, automatyzacji, prototypów</div>
+      <div class="list-item">Batteries included — bogata stdlib</div>
+      <div class="list-item">Aktywna społeczność, mnóstwo dokumentacji</div>
+      <div class="list-item">Duck typing — elastyczność kodu</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--red)"></div>Słabe strony ✗</div>
+    <div class="card-body">
+      <div class="list-item">Wolny — GIL blokuje prawdziwy multithreading (CPU-bound)</div>
+      <div class="list-item">Zużycie pamięci — obiekty są "ciężkie"</div>
+      <div class="list-item">Słaby na mobile (nie ma dobrego runtime)</div>
+      <div class="list-item">Dynamiczne typowanie = błędy w runtime zamiast compile-time</div>
+      <div class="list-item">Nie do systemów real-time / embedded</div>
+      <div class="list-item">Packaging/venv — piekło zależności</div>
+      <div class="list-item">Indentacja jako składnia — irytuje przy copy-paste</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--yellow)"></div>Kluczowe zasady (The Zen of Python)</div>
+    <div class="card-body">
+      <p class="desc">import this — 19 zasad projektowych Pythona</p>
+      <div class="list-item">Beautiful is better than ugly</div>
+      <div class="list-item">Explicit is better than implicit</div>
+      <div class="list-item">Simple is better than complex</div>
+      <div class="list-item">Readability counts</div>
+      <div class="list-item">There should be one obvious way to do it</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--cyan)"></div>GIL — Global Interpreter Lock</div>
+    <div class="card-body">
+      <p class="desc">Mutex w CPython który pozwala tylko jednemu wątkowi na raz wykonywać Python bytecode.</p>
+      <div class="list-item"><b style="color:var(--red)">Problem:</b> threads nie przyspieszają CPU-bound zadań</div>
+      <div class="list-item"><b style="color:var(--green)">OK:</b> I/O-bound (sieć, pliki) — GIL zwalniany podczas I/O</div>
+      <div class="list-item"><b style="color:var(--green)">Rozwiązanie:</b> multiprocessing lub async/await</div>
+      <pre><span class="co"># CPU-bound → multiprocessing</span>
+<span class="kw">from</span> multiprocessing <span class="kw">import</span> Pool
+<span class="co"># I/O-bound → asyncio</span>
+<span class="kw">import</span> asyncio</pre>
+    </div>
+  </div>
+
+</div>
+
+<!-- TYPES -->
+<div class="section" id="types">
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--py)"></div>Liczby</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Typ</th><th>Przykład</th><th>Uwagi</th></tr>
+        <tr><td>int</td><td>42, -7, 0xFF, 0b101</td><td>nieograniczona precyzja</td></tr>
+        <tr><td>float</td><td>3.14, 1e-10, inf</td><td>IEEE 754 double</td></tr>
+        <tr><td>complex</td><td>3+2j</td><td>część rzeczywista + urojona</td></tr>
+        <tr><td>Decimal</td><td>Decimal('0.1')</td><td>dokładna arytmetyka</td></tr>
+        <tr><td>Fraction</td><td>Fraction(1,3)</td><td>ułamki</td></tr>
+      </table>
+      <pre><span class="co"># operatory</span>
+<span class="nu">7</span> <span class="op">//</span> <span class="nu">2</span>   <span class="co"># 3  — dzielenie całkowite</span>
+<span class="nu">7</span> <span class="op">%</span>  <span class="nu">2</span>   <span class="co"># 1  — modulo</span>
+<span class="nu">2</span> <span class="op">**</span> <span class="nu">8</span>   <span class="co"># 256 — potęgowanie</span>
+<span class="fn">abs</span>(<span class="op">-</span><span class="nu">5</span>)  <span class="co"># 5</span>
+<span class="fn">round</span>(<span class="nu">3.567</span>, <span class="nu">2</span>)  <span class="co"># 3.57</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--green)"></div>String (str)</div>
+    <div class="card-body">
+      <p class="desc">Niemutowalny ciąg znaków Unicode. Indeksowany od 0.</p>
+      <pre><span class="co"># tworzenie</span>
+s = <span class="st">'hello'</span>
+s = <span class="st">"hello"</span>
+s = <span class="st">"""wieloliniowy
+string"""</span>
+s = <span class="st">r'\n nie escape'</span>       <span class="co"># raw</span>
+s = <span class="st">f'wynik: </span>{<span class="nu">2</span><span class="op">+</span><span class="nu">2</span>}<span class="st">'</span>     <span class="co"># f-string</span>
+s = <span class="st">b'bajty'</span>               <span class="co"># bytes</span>
+
+<span class="co"># operacje</span>
+s[<span class="nu">0</span>]        <span class="co"># 'h'</span>
+s[<span class="op">-</span><span class="nu">1</span>]       <span class="co"># ostatni</span>
+s[<span class="nu">1</span>:<span class="nu">3</span>]      <span class="co"># slice 'el'</span>
+s[::<span class="op">-</span><span class="nu">1</span>]     <span class="co"># odwrócony</span>
+<span class="fn">len</span>(s)      <span class="co"># długość</span>
+s.<span class="fn">upper</span>()  s.<span class="fn">lower</span>()
+s.<span class="fn">strip</span>()  s.<span class="fn">split</span>(<span class="st">','</span>)
+s.<span class="fn">replace</span>(<span class="st">'a'</span>,<span class="st">'b'</span>)
+s.<span class="fn">startswith</span>(<span class="st">'h'</span>)
+<span class="st">','</span>.<span class="fn">join</span>([<span class="st">'a'</span>,<span class="st">'b'</span>])  <span class="co"># 'a,b'</span>
+<span class="st">'sub'</span> <span class="kw">in</span> s            <span class="co"># bool</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--yellow)"></div>Boolean i None</div>
+    <div class="card-body">
+      <pre><span class="co"># bool (podklasa int!)</span>
+<span class="kw">True</span>  <span class="kw">False</span>
+<span class="fn">bool</span>(<span class="nu">0</span>)    <span class="co"># False</span>
+<span class="fn">bool</span>(<span class="st">''</span>)   <span class="co"># False</span>
+<span class="fn">bool</span>([])   <span class="co"># False</span>
+<span class="fn">bool</span>(<span class="nu">1</span>)    <span class="co"># True</span>
+
+<span class="co"># Falsy: 0, '', [], {}, (), None, set()</span>
+<span class="co"># Truthy: wszystko inne</span>
+
+<span class="co"># None — brak wartości</span>
+x = <span class="kw">None</span>
+x <span class="kw">is</span> <span class="kw">None</span>   <span class="co"># True (używaj 'is' nie ==)</span>
+
+<span class="co"># operatory logiczne</span>
+<span class="kw">and</span>  <span class="kw">or</span>  <span class="kw">not</span>
+<span class="co"># short-circuit evaluation!</span>
+x = x <span class="kw">or</span> <span class="st">'default'</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--cyan)"></div>Type hints (Python 3.5+)</div>
+    <div class="card-body">
+      <p class="desc">Opcjonalne adnotacje typów — nie wymuszane w runtime, ale pomagają IDE i mypy.</p>
+      <pre><span class="kw">def</span> <span class="fn">greet</span>(name: <span class="cl">str</span>) <span class="op">-></span> <span class="cl">str</span>:
+    <span class="kw">return</span> <span class="st">f'Cześć </span>{name}<span class="st">'</span>
+
+x: <span class="cl">int</span> = <span class="nu">5</span>
+y: <span class="cl">list</span>[<span class="cl">int</span>] = [<span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>]
+
+<span class="kw">from</span> typing <span class="kw">import</span> Optional, Union
+z: <span class="cl">Optional</span>[<span class="cl">str</span>] = <span class="kw">None</span>    <span class="co"># str | None</span>
+w: <span class="cl">Union</span>[<span class="cl">int</span>, <span class="cl">str</span>] = <span class="nu">5</span>   <span class="co"># int | str (3.10+)</span></pre>
+    </div>
+  </div>
+
+</div>
+
+<!-- COLLECTIONS -->
+<div class="section" id="collections">
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--py)"></div>list — mutowalny, uporządkowany</div>
+    <div class="card-body">
+      <pre>a = [<span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>]
+a.<span class="fn">append</span>(<span class="nu">4</span>)        <span class="co"># [1,2,3,4]</span>
+a.<span class="fn">extend</span>([<span class="nu">5</span>,<span class="nu">6</span>])   <span class="co"># dodaj wiele</span>
+a.<span class="fn">insert</span>(<span class="nu">0</span>, <span class="nu">99</span>)   <span class="co"># wstaw na indeks</span>
+a.<span class="fn">pop</span>()            <span class="co"># usuń ostatni</span>
+a.<span class="fn">pop</span>(<span class="nu">0</span>)          <span class="co"># usuń z indeksu</span>
+a.<span class="fn">remove</span>(<span class="nu">2</span>)       <span class="co"># usuń wartość</span>
+a.<span class="fn">sort</span>()           <span class="co"># in-place</span>
+<span class="fn">sorted</span>(a)          <span class="co"># nowa lista</span>
+a.<span class="fn">reverse</span>()
+a[<span class="nu">1</span>:<span class="nu">3</span>] = [<span class="nu">9</span>,<span class="nu">9</span>]    <span class="co"># slice assignment</span>
+
+<span class="co"># list comprehension</span>
+sq = [x<span class="op">**</span><span class="nu">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="nu">10</span>) <span class="kw">if</span> x <span class="op">%</span> <span class="nu">2</span> == <span class="nu">0</span>]</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--orange)"></div>tuple — niemutowalny, uporządkowany</div>
+    <div class="card-body">
+      <pre>t = (<span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>)
+t = <span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>     <span class="co"># bez nawiasów też działa</span>
+t = (<span class="nu">1</span>,)          <span class="co"># jednoelementowy — uwaga na ','</span>
+
+<span class="co"># unpacking</span>
+a, b, c = t
+a, <span class="op">*</span>rest = t       <span class="co"># star unpacking</span>
+
+<span class="co"># namedtuple</span>
+<span class="kw">from</span> collections <span class="kw">import</span> namedtuple
+Point = <span class="fn">namedtuple</span>(<span class="st">'Point'</span>, [<span class="st">'x'</span>, <span class="st">'y'</span>])
+p = Point(<span class="nu">1</span>, <span class="nu">2</span>)
+p.x  <span class="co"># 1</span>
+
+<span class="co"># tuple szybszy niż list, hashable → może być kluczem dict</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--purple)"></div>dict — klucz:wartość, mutowalny (3.7+ ordered)</div>
+    <div class="card-body">
+      <pre>d = {<span class="st">'a'</span>: <span class="nu">1</span>, <span class="st">'b'</span>: <span class="nu">2</span>}
+d[<span class="st">'c'</span>] = <span class="nu">3</span>
+d.<span class="fn">get</span>(<span class="st">'x'</span>, <span class="nu">0</span>)    <span class="co"># default jeśli brak</span>
+d.<span class="fn">keys</span>()
+d.<span class="fn">values</span>()
+d.<span class="fn">items</span>()         <span class="co"># (k,v) pary</span>
+d.<span class="fn">update</span>({<span class="st">'d'</span>:<span class="nu">4</span>})
+d.<span class="fn">pop</span>(<span class="st">'a'</span>)
+<span class="st">'a'</span> <span class="kw">in</span> d           <span class="co"># sprawdź klucz</span>
+
+<span class="co"># merge (3.9+)</span>
+merged = d1 <span class="op">|</span> d2
+d1 <span class="op">|=</span> d2
+
+<span class="co"># dict comprehension</span>
+sq = {k: v<span class="op">**</span><span class="nu">2</span> <span class="kw">for</span> k,v <span class="kw">in</span> d.<span class="fn">items</span>()}
+
+<span class="co"># defaultdict</span>
+<span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+dd = <span class="fn">defaultdict</span>(<span class="cl">list</span>)</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--cyan)"></div>set — unikalny, nieuporządkowany</div>
+    <div class="card-body">
+      <pre>s = {<span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>}
+s = <span class="fn">set</span>([<span class="nu">1</span>,<span class="nu">2</span>,<span class="nu">2</span>,<span class="nu">3</span>])  <span class="co"># {1,2,3}</span>
+s.<span class="fn">add</span>(<span class="nu">4</span>)
+s.<span class="fn">discard</span>(<span class="nu">2</span>)       <span class="co"># bez błędu jeśli brak</span>
+s.<span class="fn">remove</span>(<span class="nu">2</span>)        <span class="co"># KeyError jeśli brak</span>
+
+<span class="co"># operacje zbiorowe</span>
+a <span class="op">|</span> b   <span class="co"># suma (union)</span>
+a <span class="op">&</span> b   <span class="co"># iloczyn (intersection)</span>
+a <span class="op">-</span> b   <span class="co"># różnica</span>
+a <span class="op">^</span> b   <span class="co"># różnica symetryczna</span>
+a <span class="op"><=</span> b  <span class="co"># podzbiór</span>
+
+<span class="co"># frozenset — niemutowalny, hashable</span>
+fs = <span class="fn">frozenset</span>({<span class="nu">1</span>,<span class="nu">2</span>,<span class="nu">3</span>})</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--yellow)"></div>Przydatne z collections</div>
+    <div class="card-body">
+      <pre><span class="kw">from</span> collections <span class="kw">import</span> (
+    Counter, deque, OrderedDict,
+    defaultdict, ChainMap
+)
+
+<span class="co"># Counter — zliczanie</span>
+c = <span class="fn">Counter</span>(<span class="st">'abracadabra'</span>)
+c.<span class="fn">most_common</span>(<span class="nu">3</span>)
+
+<span class="co"># deque — kolejka O(1) append/pop obu stron</span>
+dq = <span class="fn">deque</span>(maxlen=<span class="nu">100</span>)
+dq.<span class="fn">appendleft</span>(<span class="nu">0</span>)
+dq.<span class="fn">rotate</span>(<span class="nu">1</span>)
+
+<span class="co"># ChainMap — wiele dict jako jeden</span>
+cm = <span class="fn">ChainMap</span>(d1, d2)</pre>
+    </div>
+  </div>
+
+</div>
+
+<!-- FUNCTIONS -->
+<div class="section" id="functions">
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--py)"></div>Definicja funkcji</div>
+    <div class="card-body">
+      <pre><span class="kw">def</span> <span class="fn">add</span>(a: <span class="cl">int</span>, b: <span class="cl">int</span> = <span class="nu">0</span>) <span class="op">-></span> <span class="cl">int</span>:
+    <span class="st">"""Docstring — opis funkcji."""</span>
+    <span class="kw">return</span> a + b
+
+<span class="co"># *args — dowolna liczba pozycyjnych</span>
+<span class="kw">def</span> <span class="fn">suma</span>(<span class="op">*</span>args):
+    <span class="kw">return</span> <span class="fn">sum</span>(args)
+
+<span class="co"># **kwargs — dowolna liczba nazwanych</span>
+<span class="kw">def</span> <span class="fn">info</span>(<span class="op">**</span>kwargs):
+    <span class="kw">for</span> k, v <span class="kw">in</span> kwargs.<span class="fn">items</span>():
+        <span class="fn">print</span>(<span class="st">f'</span>{k}<span class="st">: </span>{v}<span class="st">'</span>)
+
+<span class="co"># keyword-only (po *)</span>
+<span class="kw">def</span> <span class="fn">f</span>(a, <span class="op">*</span>, b, c=<span class="nu">1</span>): <span class="kw">pass</span>
+
+<span class="co"># positional-only (przed /)</span>
+<span class="kw">def</span> <span class="fn">g</span>(a, b, <span class="op">/</span>, c): <span class="kw">pass</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--green)"></div>Lambda i funkcje wyższe</div>
+    <div class="card-body">
+      <pre><span class="co"># lambda — anonimowa, jednolinijkowa</span>
+sq = <span class="kw">lambda</span> x: x <span class="op">**</span> <span class="nu">2</span>
+sq(<span class="nu">5</span>)  <span class="co"># 25</span>
+
+<span class="co"># map, filter, reduce</span>
+<span class="fn">list</span>(<span class="fn">map</span>(<span class="kw">lambda</span> x: x<span class="op">*</span><span class="nu">2</span>, [<span class="nu">1</span>,<span class="nu">2</span>,<span class="nu">3</span>]))
+<span class="fn">list</span>(<span class="fn">filter</span>(<span class="kw">lambda</span> x: x<span class="op">></span><span class="nu">2</span>, [<span class="nu">1</span>,<span class="nu">2</span>,<span class="nu">3</span>]))
+
+<span class="kw">from</span> functools <span class="kw">import</span> reduce
+<span class="fn">reduce</span>(<span class="kw">lambda</span> a,b: a+b, [<span class="nu">1</span>,<span class="nu">2</span>,<span class="nu">3</span>])
+
+<span class="co"># sorted z kluczem</span>
+<span class="fn">sorted</span>(items, key=<span class="kw">lambda</span> x: x.<span class="fn">age</span>)
+
+<span class="co"># partial</span>
+<span class="kw">from</span> functools <span class="kw">import</span> partial
+double = <span class="fn">partial</span>(<span class="fn">mul</span>, <span class="nu">2</span>)</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--purple)"></div>Dekoratory</div>
+    <div class="card-body">
+      <pre><span class="co"># dekorator — funkcja opakowująca funkcję</span>
+<span class="kw">def</span> <span class="fn">moj_dekorator</span>(func):
+    <span class="kw">def</span> <span class="fn">wrapper</span>(<span class="op">*</span>args, <span class="op">**</span>kwargs):
+        <span class="fn">print</span>(<span class="st">'przed'</span>)
+        wynik = <span class="fn">func</span>(<span class="op">*</span>args, <span class="op">**</span>kwargs)
+        <span class="fn">print</span>(<span class="st">'po'</span>)
+        <span class="kw">return</span> wynik
+    <span class="kw">return</span> wrapper
+
+<span class="op">@</span><span class="fn">moj_dekorator</span>
+<span class="kw">def</span> <span class="fn">hello</span>(): <span class="fn">print</span>(<span class="st">'hello'</span>)
+
+<span class="co"># wbudowane dekoratory</span>
+<span class="op">@</span>staticmethod    <span class="co"># bez self</span>
+<span class="op">@</span>classmethod     <span class="co"># cls zamiast self</span>
+<span class="op">@</span>property        <span class="co"># getter jak atrybut</span>
+
+<span class="co"># functools.wraps — zachowuje metadane</span>
+<span class="kw">from</span> functools <span class="kw">import</span> wraps, lru_cache
+
+<span class="op">@</span><span class="fn">lru_cache</span>(maxsize=<span class="nu">128</span>)   <span class="co"># memoizacja!</span>
+<span class="kw">def</span> <span class="fn">fib</span>(n): <span class="kw">return</span> n <span class="kw">if</span> n<<span class="nu">2</span> <span class="kw">else</span> <span class="fn">fib</span>(n-<span class="nu">1</span>)+<span class="fn">fib</span>(n-<span class="nu">2</span>)</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--orange)"></div>Generatory</div>
+    <div class="card-body">
+      <p class="desc">Leniwe sekwencje — nie ładują wszystkiego do pamięci naraz.</p>
+      <pre><span class="co"># generator function (yield)</span>
+<span class="kw">def</span> <span class="fn">squares</span>(n):
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(n):
+        <span class="kw">yield</span> i <span class="op">**</span> <span class="nu">2</span>
+
+<span class="kw">for</span> sq <span class="kw">in</span> <span class="fn">squares</span>(<span class="nu">5</span>):
+    <span class="fn">print</span>(sq)
+
+<span class="co"># generator expression (jak comprehension)</span>
+gen = (x<span class="op">**</span><span class="nu">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="nu">1000000</span>))
+<span class="fn">next</span>(gen)   <span class="co"># jeden na raz</span>
+
+<span class="co"># yield from — deleguj do pod-generatora</span>
+<span class="kw">def</span> <span class="fn">flatten</span>(lst):
+    <span class="kw">for</span> item <span class="kw">in</span> lst:
+        <span class="kw">if</span> <span class="fn">isinstance</span>(item, <span class="cl">list</span>):
+            <span class="kw">yield from</span> <span class="fn">flatten</span>(item)
+        <span class="kw">else</span>: <span class="kw">yield</span> item</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--cyan)"></div>Closures i scope (LEGB)</div>
+    <div class="card-body">
+      <p class="desc">Python szuka nazw w kolejności: Local → Enclosing → Global → Built-in</p>
+      <pre><span class="co"># closure</span>
+<span class="kw">def</span> <span class="fn">counter</span>(start=<span class="nu">0</span>):
+    count = [start]
+    <span class="kw">def</span> <span class="fn">inc</span>():
+        count[<span class="nu">0</span>] <span class="op">+=</span> <span class="nu">1</span>
+        <span class="kw">return</span> count[<span class="nu">0</span>]
+    <span class="kw">return</span> inc
+
+<span class="co"># nonlocal — modyfikuj zmienną z enclosing</span>
+<span class="kw">def</span> <span class="fn">outer</span>():
+    x = <span class="nu">10</span>
+    <span class="kw">def</span> <span class="fn">inner</span>():
+        <span class="kw">nonlocal</span> x
+        x <span class="op">+=</span> <span class="nu">1</span>
+    <span class="fn">inner</span>()
+
+<span class="co"># global — modyfikuj zmienną globalną</span>
+g = <span class="nu">0</span>
+<span class="kw">def</span> <span class="fn">f</span>():
+    <span class="kw">global</span> g; g <span class="op">+=</span> <span class="nu">1</span></pre>
+    </div>
+  </div>
+
+</div>
+
+<!-- OOP -->
+<div class="section" id="oop">
+
+  <div class="card span2">
+    <div class="card-head"><div class="dot" style="background:var(--py)"></div>Klasa — pełny przykład</div>
+    <div class="card-body">
+      <pre><span class="kw">class</span> <span class="cl">Animal</span>:
+    <span class="co"># atrybut klasy (współdzielony)</span>
+    kingdom = <span class="st">'Animalia'</span>
+    
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, name: <span class="cl">str</span>, age: <span class="cl">int</span>):
+        <span class="kw">self</span>.name = name          <span class="co"># atrybut instancji</span>
+        <span class="kw">self</span>._age = age           <span class="co"># _ = konwencja "prywatny"</span>
+        <span class="kw">self</span>.__secret = <span class="st">'X'</span>      <span class="co"># __ = name mangling</span>
+
+    <span class="kw">def</span> <span class="fn">speak</span>(<span class="kw">self</span>) <span class="op">-></span> <span class="cl">str</span>:       <span class="co"># metoda instancji</span>
+        <span class="kw">return</span> <span class="st">f'I am </span>{<span class="kw">self</span>.name}<span class="st">'</span>
+
+    <span class="op">@</span>property
+    <span class="kw">def</span> <span class="fn">age</span>(<span class="kw">self</span>): <span class="kw">return</span> <span class="kw">self</span>._age
+
+    <span class="op">@</span>age.setter
+    <span class="kw">def</span> <span class="fn">age</span>(<span class="kw">self</span>, v):
+        <span class="kw">if</span> v < <span class="nu">0</span>: <span class="kw">raise</span> <span class="cl">ValueError</span>
+        <span class="kw">self</span>._age = v
+
+    <span class="op">@</span>classmethod
+    <span class="kw">def</span> <span class="fn">create</span>(<span class="kw">cls</span>, name): <span class="kw">return</span> <span class="fn">cls</span>(name, <span class="nu">0</span>)
+
+    <span class="op">@</span>staticmethod
+    <span class="kw">def</span> <span class="fn">is_animal</span>(obj): <span class="kw">return</span> <span class="fn">isinstance</span>(obj, <span class="cl">Animal</span>)
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="kw">self</span>): <span class="kw">return</span> <span class="st">f'Animal({self.name!r})'</span>
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="kw">self</span>):  <span class="kw">return</span> <span class="kw">self</span>.name
+    <span class="kw">def</span> <span class="fn">__eq__</span>(<span class="kw">self</span>, o): <span class="kw">return</span> <span class="kw">self</span>.name == o.name
+    <span class="kw">def</span> <span class="fn">__len__</span>(<span class="kw">self</span>): <span class="kw">return</span> <span class="kw">self</span>._age
+
+<span class="kw">class</span> <span class="cl">Dog</span>(<span class="cl">Animal</span>):                 <span class="co"># dziedziczenie</span>
+    <span class="kw">def</span> <span class="fn">speak</span>(<span class="kw">self</span>): <span class="kw">return</span> <span class="st">'Woof!'</span>  <span class="co"># override</span>
+    <span class="kw">def</span> <span class="fn">fetch</span>(<span class="kw">self</span>):
+        <span class="fn">super</span>().<span class="fn">speak</span>()              <span class="co"># wywołaj rodzica</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--purple)"></div>Dunder metody (Magic Methods)</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Metoda</th><th>Kiedy wywoływana</th></tr>
+        <tr><td>__init__</td><td>konstruktor (tworzenie obiektu)</td></tr>
+        <tr><td>__repr__</td><td>repr(obj) — developerski opis</td></tr>
+        <tr><td>__str__</td><td>str(obj), print(obj)</td></tr>
+        <tr><td>__len__</td><td>len(obj)</td></tr>
+        <tr><td>__getitem__</td><td>obj[key]</td></tr>
+        <tr><td>__setitem__</td><td>obj[key] = val</td></tr>
+        <tr><td>__contains__</td><td>x in obj</td></tr>
+        <tr><td>__iter__</td><td>for x in obj</td></tr>
+        <tr><td>__call__</td><td>obj()</td></tr>
+        <tr><td>__enter__/__exit__</td><td>with obj:</td></tr>
+        <tr><td>__add__/__mul__</td><td>obj + other</td></tr>
+        <tr><td>__eq__/__lt__</td><td>==, &lt;</td></tr>
+        <tr><td>__hash__</td><td>hash(obj), dict key</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--green)"></div>dataclass i ABC</div>
+    <div class="card-body">
+      <pre><span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass, field
+
+<span class="op">@</span>dataclass
+<span class="kw">class</span> <span class="cl">Point</span>:
+    x: <span class="cl">float</span>
+    y: <span class="cl">float</span>
+    z: <span class="cl">float</span> = <span class="nu">0.0</span>
+    tags: <span class="cl">list</span> = <span class="fn">field</span>(default_factory=<span class="cl">list</span>)
+<span class="co"># auto: __init__, __repr__, __eq__</span>
+
+<span class="op">@</span>dataclass(frozen=<span class="kw">True</span>)  <span class="co"># niemutowalny</span>
+<span class="kw">class</span> <span class="cl">Frozen</span>: x: <span class="cl">int</span>
+
+<span class="co"># Klasa abstrakcyjna</span>
+<span class="kw">from</span> abc <span class="kw">import</span> ABC, abstractmethod
+
+<span class="kw">class</span> <span class="cl">Shape</span>(<span class="cl">ABC</span>):
+    <span class="op">@</span>abstractmethod
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="kw">self</span>) <span class="op">-></span> <span class="cl">float</span>: ...
+
+<span class="kw">class</span> <span class="cl">Circle</span>(<span class="cl">Shape</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, r): <span class="kw">self</span>.r = r
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="kw">self</span>): <span class="kw">return</span> <span class="nu">3.14</span> <span class="op">*</span> <span class="kw">self</span>.r<span class="op">**</span><span class="nu">2</span></pre>
+    </div>
+  </div>
+
+</div>
+
+<!-- CONTROL FLOW -->
+<div class="section" id="control">
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--py)"></div>Warunki i pętle</div>
+    <div class="card-body">
+      <pre><span class="co"># if / elif / else</span>
+<span class="kw">if</span> x > <span class="nu">0</span>:    ...
+<span class="kw">elif</span> x == <span class="nu">0</span>: ...
+<span class="kw">else</span>:        ...
+
+<span class="co"># ternary</span>
+val = <span class="st">'tak'</span> <span class="kw">if</span> x > <span class="nu">0</span> <span class="kw">else</span> <span class="st">'nie'</span>
+
+<span class="co"># match/case (3.10+)</span>
+<span class="kw">match</span> command:
+    <span class="kw">case</span> <span class="st">'quit'</span>:  ...
+    <span class="kw">case</span> <span class="st">'go'</span>, direction: ...
+    <span class="kw">case</span> _: ...  <span class="co"># wildcard</span>
+
+<span class="co"># for</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nu">10</span>): ...
+<span class="kw">for</span> i, v <span class="kw">in</span> <span class="fn">enumerate</span>(lst): ...
+<span class="kw">for</span> a, b <span class="kw">in</span> <span class="fn">zip</span>(l1, l2): ...
+<span class="kw">else</span>: ...  <span class="co"># wykonuje się jeśli brak break</span>
+
+<span class="co"># while</span>
+<span class="kw">while</span> condition:
+    <span class="kw">if</span> bad: <span class="kw">break</span>
+    <span class="kw">if</span> skip: <span class="kw">continue</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--red)"></div>Wyjątki</div>
+    <div class="card-body">
+      <pre><span class="kw">try</span>:
+    risky()
+<span class="kw">except</span> <span class="cl">ValueError</span> <span class="kw">as</span> e:
+    <span class="fn">print</span>(e)
+<span class="kw">except</span> (<span class="cl">TypeError</span>, <span class="cl">KeyError</span>):
+    <span class="fn">print</span>(<span class="st">'kilka typów'</span>)
+<span class="kw">except</span> <span class="cl">Exception</span>:        <span class="co"># łapie prawie wszystko</span>
+    <span class="kw">raise</span>                 <span class="co"># ponownie rzuć</span>
+<span class="kw">else</span>:                     <span class="co"># jeśli NIE było wyjątku</span>
+    ok()
+<span class="kw">finally</span>:                  <span class="co"># zawsze</span>
+    cleanup()
+
+<span class="co"># własny wyjątek</span>
+<span class="kw">class</span> <span class="cl">AppError</span>(<span class="cl">Exception</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, msg, code):
+        <span class="fn">super</span>().<span class="fn">__init__</span>(msg)
+        <span class="kw">self</span>.code = code
+
+<span class="kw">raise</span> <span class="cl">AppError</span>(<span class="st">'błąd'</span>, <span class="nu">404</span>)</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--cyan)"></div>Context Managers</div>
+    <div class="card-body">
+      <pre><span class="co"># with — auto cleanup</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">'plik.txt'</span>, <span class="st">'r'</span>, encoding=<span class="st">'utf-8'</span>) <span class="kw">as</span> f:
+    data = f.<span class="fn">read</span>()
+
+<span class="co"># własny context manager</span>
+<span class="kw">class</span> <span class="cl">Timer</span>:
+    <span class="kw">def</span> <span class="fn">__enter__</span>(<span class="kw">self</span>):
+        <span class="kw">self</span>.start = time.<span class="fn">time</span>()
+        <span class="kw">return</span> <span class="kw">self</span>
+    <span class="kw">def</span> <span class="fn">__exit__</span>(<span class="kw">self</span>, *args):
+        <span class="fn">print</span>(time.<span class="fn">time</span>() <span class="op">-</span> <span class="kw">self</span>.start)
+
+<span class="co"># lub dekoratorem</span>
+<span class="kw">from</span> contextlib <span class="kw">import</span> contextmanager
+
+<span class="op">@</span>contextmanager
+<span class="kw">def</span> <span class="fn">managed</span>():
+    <span class="fn">setup</span>()
+    <span class="kw">yield</span>
+    <span class="fn">cleanup</span>()</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--purple)"></div>Async / Await</div>
+    <div class="card-body">
+      <pre><span class="kw">import</span> asyncio
+
+<span class="kw">async def</span> <span class="fn">fetch</span>(url):
+    <span class="kw">await</span> asyncio.<span class="fn">sleep</span>(<span class="nu">1</span>)   <span class="co"># non-blocking</span>
+    <span class="kw">return</span> <span class="st">'data'</span>
+
+<span class="kw">async def</span> <span class="fn">main</span>():
+    <span class="co"># równolegle</span>
+    r1, r2 = <span class="kw">await</span> asyncio.<span class="fn">gather</span>(
+        <span class="fn">fetch</span>(<span class="st">'url1'</span>),
+        <span class="fn">fetch</span>(<span class="st">'url2'</span>)
+    )
+
+asyncio.<span class="fn">run</span>(<span class="fn">main</span>())
+
+<span class="co"># async generator</span>
+<span class="kw">async def</span> <span class="fn">stream</span>():
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nu">5</span>):
+        <span class="kw">await</span> asyncio.<span class="fn">sleep</span>(<span class="nu">0.1</span>)
+        <span class="kw">yield</span> i</pre>
+    </div>
+  </div>
+
+</div>
+
+<!-- BUILTINS -->
+<div class="section" id="builtins">
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--py)"></div>Wbudowane funkcje</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Funkcja</th><th>Co robi</th></tr>
+        <tr><td>len(x)</td><td>długość</td></tr>
+        <tr><td>range(n)</td><td>sekwencja liczb</td></tr>
+        <tr><td>enumerate(it)</td><td>indeks + wartość</td></tr>
+        <tr><td>zip(a, b)</td><td>pary elementów</td></tr>
+        <tr><td>map(f, it)</td><td>zastosuj funkcję</td></tr>
+        <tr><td>filter(f, it)</td><td>filtruj</td></tr>
+        <tr><td>sorted(it)</td><td>posortowana kopia</td></tr>
+        <tr><td>reversed(it)</td><td>odwrócony iterator</td></tr>
+        <tr><td>any(it) / all(it)</td><td>bool na kolekcji</td></tr>
+        <tr><td>min/max/sum</td><td>agregaty</td></tr>
+        <tr><td>isinstance(o, T)</td><td>sprawdź typ</td></tr>
+        <tr><td>hasattr/getattr/setattr</td><td>atrybuty obiektu</td></tr>
+        <tr><td>dir(obj)</td><td>lista atrybutów</td></tr>
+        <tr><td>vars(obj)</td><td>__dict__ obiektu</td></tr>
+        <tr><td>id(obj)</td><td>adres w pamięci</td></tr>
+        <tr><td>hash(obj)</td><td>hash value</td></tr>
+        <tr><td>open()</td><td>plik</td></tr>
+        <tr><td>input()</td><td>wejście od użytkownika</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--green)"></div>Stdlib — kluczowe moduły</div>
+    <div class="card-body">
+      <table>
+        <tr><th>Moduł</th><th>Do czego</th></tr>
+        <tr><td>os / pathlib</td><td>system plików</td></tr>
+        <tr><td>sys</td><td>interpreter, argv</td></tr>
+        <tr><td>json</td><td>JSON encode/decode</td></tr>
+        <tr><td>re</td><td>wyrażenia regularne</td></tr>
+        <tr><td>datetime</td><td>daty i czas</td></tr>
+        <tr><td>math / statistics</td><td>obliczenia</td></tr>
+        <tr><td>random</td><td>losowość</td></tr>
+        <tr><td>itertools</td><td>kombinatoryka iteratorów</td></tr>
+        <tr><td>functools</td><td>HOF, caching, partial</td></tr>
+        <tr><td>threading</td><td>wątki (I/O-bound)</td></tr>
+        <tr><td>multiprocessing</td><td>procesy (CPU-bound)</td></tr>
+        <tr><td>asyncio</td><td>async I/O</td></tr>
+        <tr><td>subprocess</td><td>uruchom proces zewnętrzny</td></tr>
+        <tr><td>logging</td><td>logi</td></tr>
+        <tr><td>unittest / pytest</td><td>testy</td></tr>
+        <tr><td>typing</td><td>type hints</td></tr>
+        <tr><td>dataclasses</td><td>klasy danych</td></tr>
+        <tr><td>enum</td><td>enumeracje</td></tr>
+        <tr><td>abc</td><td>klasy abstrakcyjne</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--orange)"></div>Konwersje typów</div>
+    <div class="card-body">
+      <pre><span class="fn">int</span>(<span class="st">'42'</span>)       <span class="co"># str → int</span>
+<span class="fn">int</span>(<span class="st">'FF'</span>, <span class="nu">16</span>)   <span class="co"># hex → int</span>
+<span class="fn">float</span>(<span class="st">'3.14'</span>)   <span class="co"># str → float</span>
+<span class="fn">str</span>(<span class="nu">42</span>)         <span class="co"># → str</span>
+<span class="fn">bool</span>(<span class="nu">0</span>)         <span class="co"># → False</span>
+<span class="fn">list</span>({<span class="nu">1</span>,<span class="nu">2</span>})     <span class="co"># set → list</span>
+<span class="fn">tuple</span>([<span class="nu">1</span>,<span class="nu">2</span>])   <span class="co"># list → tuple</span>
+<span class="fn">set</span>([<span class="nu">1</span>,<span class="nu">1</span>,<span class="nu">2</span>])   <span class="co"># list → set (usuwa duplikaty)</span>
+<span class="fn">dict</span>([(<span class="st">'a'</span>,<span class="nu">1</span>)]) <span class="co"># list par → dict</span>
+<span class="fn">chr</span>(<span class="nu">65</span>)         <span class="co"># 'A'</span>
+<span class="fn">ord</span>(<span class="st">'A'</span>)        <span class="co"># 65</span>
+<span class="fn">hex</span>(<span class="nu">255</span>)        <span class="co"># '0xff'</span>
+<span class="fn">bin</span>(<span class="nu">10</span>)         <span class="co"># '0b1010'</span></pre>
+    </div>
+  </div>
+
+</div>
+
+<!-- ADVANCED -->
+<div class="section" id="advanced">
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--py)"></div>Protokoły / Duck typing</div>
+    <div class="card-body">
+      <p class="desc">"If it walks like a duck..." — Python sprawdza metody, nie typy.</p>
+      <pre><span class="co"># Iterable: __iter__</span>
+<span class="co"># Iterator: __iter__ + __next__</span>
+<span class="co"># Sequence: __getitem__ + __len__</span>
+<span class="co"># Mapping: __getitem__ + __len__ + __iter__</span>
+<span class="co"># Callable: __call__</span>
+<span class="co"># Context Manager: __enter__ + __exit__</span>
+
+<span class="co"># typing.Protocol (3.8+)</span>
+<span class="kw">from</span> typing <span class="kw">import</span> Protocol
+
+<span class="kw">class</span> <span class="cl">Drawable</span>(<span class="cl">Protocol</span>):
+    <span class="kw">def</span> <span class="fn">draw</span>(<span class="kw">self</span>) <span class="op">-></span> <span class="kw">None</span>: ...</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--purple)"></div>Comprehensions — wszystkie typy</div>
+    <div class="card-body">
+      <pre><span class="co"># list comprehension</span>
+[x<span class="op">**</span><span class="nu">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="nu">10</span>)]
+
+<span class="co"># dict comprehension</span>
+{k: v <span class="kw">for</span> k, v <span class="kw">in</span> d.<span class="fn">items</span>() <span class="kw">if</span> v}
+
+<span class="co"># set comprehension</span>
+{x <span class="op">%</span> <span class="nu">3</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="nu">10</span>)}
+
+<span class="co"># generator expression (leniwy)</span>
+(<span class="fn">line</span>.<span class="fn">strip</span>() <span class="kw">for</span> line <span class="kw">in</span> file)
+
+<span class="co"># zagnieżdżone</span>
+flat = [x <span class="kw">for</span> row <span class="kw">in</span> matrix <span class="kw">for</span> x <span class="kw">in</span> row]
+
+<span class="co"># walrus operator (3.8+)</span>
+<span class="kw">if</span> (n := <span class="fn">len</span>(data)) > <span class="nu">100</span>:
+    <span class="fn">print</span>(<span class="st">f'długi: </span>{n}<span class="st">'</span>)
+
+filtered = [y := f(x), y<span class="op">**</span><span class="nu">2</span>]</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--orange)"></div>Moduły i pakiety</div>
+    <div class="card-body">
+      <pre><span class="co"># importy</span>
+<span class="kw">import</span> os
+<span class="kw">import</span> os.path <span class="kw">as</span> osp
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+<span class="kw">from</span> . <span class="kw">import</span> modul        <span class="co"># relatywny</span>
+<span class="kw">from</span> .. <span class="kw">import</span> coś         <span class="co"># poziom wyżej</span>
+
+<span class="co"># __name__</span>
+<span class="kw">if</span> __name__ == <span class="st">'__main__'</span>:
+    <span class="fn">main</span>()
+
+<span class="co"># __all__ — eksportuj z modułu</span>
+__all__ = [<span class="st">'MyClass'</span>, <span class="st">'my_func'</span>]
+
+<span class="co"># struktura pakietu</span>
+<span class="co"># mypackage/</span>
+<span class="co">#   __init__.py</span>
+<span class="co">#   module.py</span>
+<span class="co">#   subpkg/__init__.py</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--green)"></div>Zarządzanie środowiskiem</div>
+    <div class="card-body">
+      <pre><span class="co"># venv</span>
+python3 -m venv .venv
+source .venv/bin/activate  <span class="co"># Linux/Mac</span>
+.venv\Scripts\activate     <span class="co"># Windows</span>
+
+<span class="co"># pip</span>
+pip install requests
+pip freeze > requirements.txt
+pip install -r requirements.txt
+
+<span class="co"># pyproject.toml (nowoczesne)</span>
+<span class="co"># [project]</span>
+<span class="co"># name = "myapp"</span>
+<span class="co"># dependencies = ["requests"]</span>
+
+<span class="co"># Popularne narzędzia:</span>
+<span class="co"># uv       — szybszy pip/venv</span>
+<span class="co"># poetry   — zarządzanie zależnościami</span>
+<span class="co"># pyenv    — wiele wersji Python</span>
+<span class="co"># ruff     — szybki linter/formatter</span>
+<span class="co"># mypy     — statyczne typowanie</span></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--yellow)"></div>Metaklasy i __slots__</div>
+    <div class="card-body">
+      <pre><span class="co"># __slots__ — oszczędność pamięci</span>
+<span class="kw">class</span> <span class="cl">Point</span>:
+    __slots__ = [<span class="st">'x'</span>, <span class="st">'y'</span>]  <span class="co"># brak __dict__!</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, x, y):
+        <span class="kw">self</span>.x = x; <span class="kw">self</span>.y = y
+
+<span class="co"># Metaklasa — klasa klas</span>
+<span class="kw">class</span> <span class="cl">Meta</span>(<span class="cl">type</span>):
+    <span class="kw">def</span> <span class="fn">__new__</span>(<span class="fn">mcs</span>, name, bases, ns):
+        <span class="kw">return</span> <span class="fn">super</span>().<span class="fn">__new__</span>(<span class="fn">mcs</span>, name, bases, ns)
+
+<span class="kw">class</span> <span class="cl">MyClass</span>(metaclass=<span class="cl">Meta</span>): <span class="kw">pass</span>
+
+<span class="co"># Descriptor protocol</span>
+<span class="kw">class</span> <span class="cl">Validator</span>:
+    <span class="kw">def</span> <span class="fn">__get__</span>(<span class="kw">self</span>, obj, t): ...
+    <span class="kw">def</span> <span class="fn">__set__</span>(<span class="kw">self</span>, obj, val): ...
+    <span class="kw">def</span> <span class="fn">__delete__</span>(<span class="kw">self</span>, obj): ...</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="dot" style="background:var(--cyan)"></div>Najważniejsze wzorce</div>
+    <div class="card-body">
+      <pre><span class="co"># Singleton</span>
+<span class="kw">class</span> <span class="cl">Singleton</span>:
+    _inst = <span class="kw">None</span>
+    <span class="kw">def</span> <span class="fn">__new__</span>(<span class="kw">cls</span>):
+        <span class="kw">if</span> <span class="kw">not</span> <span class="kw">cls</span>._inst:
+            <span class="kw">cls</span>._inst = <span class="fn">super</span>().<span class="fn">__new__</span>(<span class="kw">cls</span>)
+        <span class="kw">return</span> <span class="kw">cls</span>._inst
+
+<span class="co"># Dependency Injection</span>
+<span class="kw">def</span> <span class="fn">process</span>(data, logger=<span class="kw">None</span>):
+    logger = logger <span class="kw">or</span> <span class="fn">print</span>
+    logger(<span class="st">'processing'</span>)
+
+<span class="co"># Registry</span>
+_registry = {}
+<span class="kw">def</span> <span class="fn">register</span>(name):
+    <span class="kw">def</span> <span class="fn">dec</span>(cls):
+        _registry[name] = cls
+        <span class="kw">return</span> cls
+    <span class="kw">return</span> dec</pre>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
